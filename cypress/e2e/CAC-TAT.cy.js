@@ -32,11 +32,11 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.get('#phone').type('abcdefg').should('have.value','')
   });
 
-  it('Exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
+  it.only('Exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
     cy.get('#firstName').type('Everton')
     cy.get('#lastName').type('Ferreira')
     cy.get('#email').type('everton@teste.com')
-    cy.get('#phone-checkbox').click()
+    cy.get('#phone-checkbox').check()
     cy.get('#open-text-area').type("Teste")
     cy.contains('button', 'Enviar').click()
 
@@ -85,9 +85,9 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     })
   });
 
-  it.only('', () => {
-    
+  it('Marca ambos checkboxes, depois desmarca o último', () => {
+    cy.get('input[type="checkbox"').check().should('be.checked').last().uncheck().should('not.be.checked')
   });
-
+  
 
 })
