@@ -122,7 +122,11 @@ describe('Central de Atendimento ao Cliente TAT', () => {
 
  // Testa a página da política de privacidade de forma independente -> esta em outro arquivo JS
 
-  it.only('', () => {
+  it('', () => {
+    
+  });
+
+  it('', () => {
     
   });
 
