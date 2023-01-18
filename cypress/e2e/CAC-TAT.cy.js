@@ -6,7 +6,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.visit('./src/index.html')
   });
   it('Verificar o título da aplicação', () => {
-    cy.title().should('be.equal','Central de Atendimento ao Cliente TAT')
+    cy.title().should('be.equal', 'Central de Atendimento ao Cliente TAT')
   })
 
   it('Preenche os campos obrigatórios e envia o formulário', () => {
@@ -17,7 +17,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.get('#firstName').type('Everton')
     cy.get('#lastName').type('Ferreira')
     cy.get('#email').type('everton@teste.com')
-    cy.get('#open-text-area').type(longText, {delay: 0})
+    cy.get('#open-text-area').type(longText, { delay: 0 })
     cy.get('button[type="submit"]').click()
 
     cy.get('.success').should('be.visible')
@@ -27,7 +27,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
 
   it('Exibe mensagem de erro so submeter o formulário com um email com formatação inválida', () => {
     cy.clock()
-    
+
     cy.get('#firstName').type('Everton')
     cy.get('#lastName').type('Ferreira')
     cy.get('#email').type('everton@teste,com')
@@ -39,12 +39,12 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.get('.error').should('not.be.visible')
   });
 
-  Cypress._.times(3, ()=> {
+  Cypress._.times(3, () => {
     it('Campo telefone continua vazio quando preenchido com valor não-numérico', () => {
-      cy.get('#phone').type('abcdefg').should('have.value','')
+      cy.get('#phone').type('abcdefg').should('have.value', '')
     })
   });
- 
+
 
   it('Exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
     cy.clock()
@@ -58,14 +58,14 @@ describe('Central de Atendimento ao Cliente TAT', () => {
 
     cy.get('.error').should('be.visible')
     cy.tick(THREE_SECONDS_IN_MS)
-    cy.get('.error').should('not.be.visible')  
+    cy.get('.error').should('not.be.visible')
   });
 
   it('Preenche e limpa os campos nome, sobrenome, email e telefone', () => {
-    cy.get('#firstName').type('Everton').should('have.value','Everton').clear().should('have.value','')
-    cy.get('#lastName').type('Ferreira').should('have.value','Ferreira').clear().should('have.value','')
-    cy.get('#email').type('everton@teste.com').should('have.value','everton@teste.com').clear().should('have.value','')
-    cy.get('#phone').type("123456789").should('have.value','123456789').clear().should('have.value','')
+    cy.get('#firstName').type('Everton').should('have.value', 'Everton').clear().should('have.value', '')
+    cy.get('#lastName').type('Ferreira').should('have.value', 'Ferreira').clear().should('have.value', '')
+    cy.get('#email').type('everton@teste.com').should('have.value', 'everton@teste.com').clear().should('have.value', '')
+    cy.get('#phone').type("123456789").should('have.value', '123456789').clear().should('have.value', '')
   });
 
   it('Exibe mensagem de erro ao submeter o formulário sem preencher os campos obrigatórios', () => {
@@ -121,7 +121,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
   });
 
   it('Seleciona um arquivo simulando drag-and-drop', () => {
-    cy.get('input[type="file"]#file-upload').should('not.have.value').selectFile('./cypress/fixtures/example.json', {action: 'drag-drop'}).should(($input) => {
+    cy.get('input[type="file"]#file-upload').should('not.have.value').selectFile('./cypress/fixtures/example.json', { action: 'drag-drop' }).should(($input) => {
       console.log($input)
       expect($input[0].files[0].name).to.equal('example.json')
     })
@@ -129,7 +129,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
 
   it('Selecione um arquivo utilizando uma fixture para a qual foi dada um alias', () => {
     cy.fixture('example.json').as('sampleFile')
-    cy.get('input[type="file"]#file-upload').should('not.have.value').selectFile('@sampleFile', {action: 'drag-drop'}).should(($input) => {
+    cy.get('input[type="file"]#file-upload').should('not.have.value').selectFile('@sampleFile', { action: 'drag-drop' }).should(($input) => {
       console.log($input)
       expect($input[0].files[0].name).to.equal('example.json')
     })
@@ -144,12 +144,17 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.contains('Talking About Testing').should('be.visible')
   });
 
- // Testa a página da política de privacidade de forma independente -> esta em outro arquivo JS
+  // Testa a página da política de privacidade de forma independente -> esta em outro arquivo JS
 
- it.only('Exibe e esconde as mensagens de sucesso e erro usando 0 .invoke()', () => {
+  it('Exibe e esconde as mensagens de sucesso e erro usando 0 .invoke()', () => {
     cy.get('.success').invoke('show').should('be.visible').and('contain', 'Mensagem enviada com sucesso.').invoke('hide').should('not.be.visible')
     cy.get('.error').should('not.be.visible').invoke('show').should('be.visible').and('contain', 'Valide os campos obrigatórios!').invoke('hide').should('not.be.visible')
- });
+  });
 
- 
+  it.only('Preenche a area de texto usando o comando invoke', () => {
+    const longText = Cypress._.repeat('123456789', 20)
+
+    cy.get('#open-text-area').invoke('val', longText).should('have.value', longText)
+  });
+
 })
